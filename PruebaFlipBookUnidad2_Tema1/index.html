@@ -6,7 +6,7 @@
   <title>Guia_Unidad2_Tema1_BuclesNew — Visor</title>
 
   <!-- Preload primera página para calcular proporción -->
-  <link rel="preload" as="image" href="./images/page-1-b5f394ad.webp" />
+  <link rel="preload" as="image" href="./img/page-1-b5f394ad.webp" />
 
   <style>
     :root{
@@ -78,12 +78,12 @@
   </div>
 
   <!-- libs -->
-  <script src="./vendor/jquery.min.js"></script>
-  <script src="./vendor/turn.min.js"></script>
+  <script src="./lib/jquery.min.js"></script>
+  <script src="./lib/turn.min.js"></script>
 
   <!-- páginas e integridad -->
   <script
-    data-pages='["images/page-1-b5f394ad.webp","images/page-2-93c23f05.webp","images/page-3-f6e96339.webp","images/page-4-916565ee.webp","images/page-5-ba24b5b5.webp","images/page-6-4ec23e65.webp","images/page-7-f4884f6a.webp","images/page-8-a17c6862.webp","images/page-9-4a966a91.webp","images/page-10-bc484d47.webp","images/page-11-e041a910.webp","images/page-12-f97c0412.webp","images/page-13-e9552365.webp","images/page-14-a204c2c4.webp"]'>
+    data-pages='["img/page-1-b5f394ad.webp","img/page-2-93c23f05.webp","img/page-3-f6e96339.webp","img/page-4-916565ee.webp","img/page-5-ba24b5b5.webp","img/page-6-4ec23e65.webp","img/page-7-f4884f6a.webp","img/page-8-a17c6862.webp","img/page-9-4a966a91.webp","img/page-10-bc484d47.webp","img/page-11-e041a910.webp","img/page-12-f97c0412.webp","img/page-13-e9552365.webp","img/page-14-a204c2c4.webp"]'>
   (async function(){
     const imgs = JSON.parse(document.currentScript.getAttribute('data-pages'));
 
@@ -174,7 +174,7 @@
         if (e.key === 'ArrowRight') { e.preventDefault(); $(book).turn('next'); }
       });
 
-      // rueda: si estamos en modo “single”, rueda = navegar
+      // rueda
       book.addEventListener('wheel', (e)=>{
         if (Math.abs(e.deltaY) < 3) return;
         if (isMobile()) return;
@@ -191,7 +191,7 @@
           const p = $(book).turn('page');
           if (p >= imgs.length) { stopAuto(); return; }
           $(book).turn('next');
-        }, 5000); // cada 5 s
+        }, 5000);
         autoBtn.textContent = 'Auto ⏸';
         autoBtn.dataset.active = '1';
       }
@@ -201,11 +201,9 @@
         autoBtn.textContent = 'Auto ▷';
         delete autoBtn.dataset.active;
       }
-      // comienza en automático (puedes desactivar cambiando la línea siguiente)
       startAuto();
       autoBtn.onclick = ()=> autoTimer ? stopAuto() : startAuto();
 
-      // al interactuar manualmente, pausamos auto
       ['click','keydown','wheel','touchstart','pointerdown'].forEach(ev=>{
         book.addEventListener(ev, ()=>{ if (autoTimer) stopAuto(); }, {passive:true});
       });
@@ -226,11 +224,10 @@
         vImg.style.transform = `translate(${pan.x}px, ${pan.y}px) scale(${scale})`;
       }
       function fitToScreen(){
-        // ajustar imagen al contenedor
         const cw = vWrap.clientWidth, ch = vWrap.clientHeight;
         const iw = vImg.naturalWidth, ih = vImg.naturalHeight;
         const s = Math.min(cw/iw, ch/ih);
-        scale = Math.max(1, s); // al menos 1x
+        scale = Math.max(1, s);
         pan = {x: Math.max(0,(cw - iw*scale)/2), y: Math.max(0,(ch - ih*scale)/2)};
         setTransform();
       }
@@ -241,7 +238,6 @@
         vImg.src = curr.src;
         viewer.classList.add('open');
         viewer.setAttribute('aria-hidden','false');
-        // al cargar la imagen, ajustar
         if (vImg.complete) fitToScreen(); else vImg.onload = fitToScreen;
       }
       function closeViewer(){
@@ -252,34 +248,28 @@
       btnZoom.onclick = openViewerForCurrent;
       btnClose.onclick = closeViewer;
       viewer.addEventListener('click', (e)=>{
-        // cerrar si clic fuera del área de imagen
         if (e.target === viewer) closeViewer();
       });
 
-      // zoom +/−
       zIn.onclick = ()=>{ scale = Math.min(scale*1.25, 8); setTransform(); };
       zOut.onclick = ()=>{ scale = Math.max(scale/1.25, 0.5); setTransform(); };
       zFit.onclick = ()=> fitToScreen();
 
-      // doble clic para alternar 1x / 2x
       vWrap.addEventListener('dblclick', ()=>{
         if (scale <= 1.01) { scale = 2; } else { scale = 1; }
         setTransform();
       });
 
-      // arrastrar para mover
       vWrap.addEventListener('pointerdown', (e)=>{ dragging=true; start={x:e.clientX - pan.x, y:e.clientY - pan.y}; vWrap.setPointerCapture(e.pointerId); });
       vWrap.addEventListener('pointermove', (e)=>{ if(!dragging) return; pan.x = e.clientX - start.x; pan.y = e.clientY - start.y; setTransform(); });
       vWrap.addEventListener('pointerup', ()=> dragging=false);
       vWrap.addEventListener('pointercancel', ()=> dragging=false);
 
-      // rueda para zoom (en visor)
       vWrap.addEventListener('wheel', (e)=>{
         e.preventDefault();
         const factor = e.deltaY > 0 ? 1/1.15 : 1.15;
         const prev = scale;
         scale = Math.min(8, Math.max(0.5, scale*factor));
-        // mantener punto bajo el cursor
         const rect = vWrap.getBoundingClientRect();
         const cx = e.clientX - rect.left - pan.x;
         const cy = e.clientY - rect.top  - pan.y;
@@ -291,8 +281,6 @@
 
     mount();
 
-    /* IMPORTANTE: Se eliminaron por completo las marcas de agua y cualquier
-       código que las recreara. */
   })();
   </script>
 </body>
