@@ -13,23 +13,60 @@
       --bg:#0b0f19; --panel:#0f172a; --text:#e5e7eb; --muted:#94a3b8;
       --ring:rgba(255,255,255,.10); --btn:rgba(255,255,255,.08); --btn-bd:rgba(255,255,255,.18);
     }
-    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial,sans-serif}
-    .wrap{display:flex;align-items:center;justify-content:center;height:100%;padding:16px;box-sizing:border-box}
-    #book{
-      position:relative;width:auto;height:auto;max-width:95vw;max-height:90vh;
-      box-shadow:0 12px 34px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.03), inset 0 24px 48px rgba(0,0,0,.18);
-      background:#111827;border-radius:16px;overflow:hidden;touch-action:none;
+    html,body{
+      height:100%;
+      margin:0;
+      color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial,sans-serif;
+      background: url('./fondo.png') no-repeat center center fixed;
+      background-size: cover;
     }
-    #book::after{content:'';position:absolute;top:4%;bottom:4%;left:50%;width:3px;transform:translateX(-50%);
-      background:linear-gradient(to bottom,transparent,rgba(0,0,0,.4),transparent);opacity:.25;pointer-events:none;filter:blur(.2px)}
+
+    .wrap{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      height:100%;
+      padding:16px;
+      box-sizing:border-box;
+      backdrop-filter: brightness(0.9);
+    }
+
+    #book{
+      position:relative;
+      width:auto;
+      height:auto;
+      max-width:95vw;
+      max-height:90vh;
+      box-shadow:0 12px 34px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.03), inset 0 24px 48px rgba(0,0,0,.18);
+      background:#111827cc; /* Fondo semitransparente para resaltar sobre la imagen */
+      border-radius:16px;
+      overflow:hidden;
+      touch-action:none;
+    }
+
+    #book::after{
+      content:'';
+      position:absolute;
+      top:4%;bottom:4%;left:50%;
+      width:3px;transform:translateX(-50%);
+      background:linear-gradient(to bottom,transparent,rgba(0,0,0,.4),transparent);
+      opacity:.25;pointer-events:none;filter:blur(.2px)
+    }
     #book[data-mode="single"]::after{display:none}
+
     .loading{text-align:center;opacity:.8;padding:18px}
+
     .controls{
       position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-      display:flex;gap:10px;align-items:center;background:rgba(15,23,42,.92);
-      padding:8px 12px;border-radius:999px;backdrop-filter:blur(8px);z-index:10000;
-      border:1px solid var(--ring);box-shadow:0 8px 24px rgba(0,0,0,.35)
+      display:flex;gap:10px;align-items:center;
+      background:rgba(15,23,42,.92);
+      padding:8px 12px;border-radius:999px;
+      backdrop-filter:blur(8px);z-index:10000;
+      border:1px solid var(--ring);
+      box-shadow:0 8px 24px rgba(0,0,0,.35)
     }
+
     .btn{color:#fff;background:var(--btn);border:1px solid var(--btn-bd);padding:6px 10px;border-radius:10px;cursor:pointer}
     .btn:disabled{opacity:.5;cursor:not-allowed}
     #status{min-width:72px;text-align:center;color:var(--muted);font-weight:600}
@@ -77,27 +114,22 @@
     </div>
   </div>
 
-  <!-- libs -->
+  <!-- librerías -->
   <script src="./lib/jquery.min.js"></script>
   <script src="./lib/turn.min.js"></script>
 
-  <!-- páginas e integridad -->
+  <!-- páginas -->
   <script
     data-pages='["img/page-1-b5f394ad.webp","img/page-2-93c23f05.webp","img/page-3-f6e96339.webp","img/page-4-916565ee.webp","img/page-5-ba24b5b5.webp","img/page-6-4ec23e65.webp","img/page-7-f4884f6a.webp","img/page-8-a17c6862.webp","img/page-9-4a966a91.webp","img/page-10-bc484d47.webp","img/page-11-e041a910.webp","img/page-12-f97c0412.webp","img/page-13-e9552365.webp","img/page-14-a204c2c4.webp"]'>
   (async function(){
     const imgs = JSON.parse(document.currentScript.getAttribute('data-pages'));
-
-    // precalcular ratio
     const first = await new Promise((res, rej) => { const i = new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=imgs[0]; });
     const ratio = first.naturalHeight / first.naturalWidth;
-
     const container = document.getElementById('book');
     container.innerHTML = '';
 
     function mount(){
       const book = document.getElementById('book');
-
-      // crear páginas
       imgs.forEach((src, idx) => {
         const page = document.createElement('div');
         if (idx === 0 || idx === imgs.length - 1) page.className = 'hard';
@@ -132,155 +164,8 @@
         turnCorners: 'bl,br,tl,tr', duration: 800, gradients: true
       });
       book.setAttribute('data-mode', isMobile() ? 'single' : 'double');
-
-      // UI + estado
-      const prev = document.getElementById('prev');
-      const next = document.getElementById('next');
-      const status = document.getElementById('status');
-      function updateStatus(){
-        const c = $(book).turn('page');
-        status.textContent = c + ' / ' + imgs.length;
-        prev.disabled = c <= 1; next.disabled = c >= imgs.length;
-      }
-      updateStatus();
-
-      // redimensionar
-      const onResize = () => {
-        const s = compute();
-        try { $(book).turn('display', isMobile() ? 'single' : 'double'); } catch {}
-        try { $(book).turn('size', s.bookWidth, s.bookHeight); } catch {}
-        try { $(book).turn('center'); } catch {}
-        book.setAttribute('data-mode', isMobile() ? 'single' : 'double');
-        updateStatus();
-      };
-      window.addEventListener('resize', onResize);
-      window.addEventListener('orientationchange', onResize);
-
-      // navegación
-      prev.onclick = () => $(book).turn('previous');
-      next.onclick = () => $(book).turn('next');
-      $(book).bind('turned', updateStatus);
-
-      // clic en zonas (izq/der) para navegar
-      book.addEventListener('click', (e)=>{
-        const rect = book.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        if (x < rect.width/2) $(book).turn('previous'); else $(book).turn('next');
-      });
-
-      // teclas ← →
-      window.addEventListener('keydown', (e)=>{
-        if (e.key === 'ArrowLeft') { e.preventDefault(); $(book).turn('previous'); }
-        if (e.key === 'ArrowRight') { e.preventDefault(); $(book).turn('next'); }
-      });
-
-      // rueda
-      book.addEventListener('wheel', (e)=>{
-        if (Math.abs(e.deltaY) < 3) return;
-        if (isMobile()) return;
-        e.preventDefault();
-        if (e.deltaY > 0) $(book).turn('next'); else $(book).turn('previous');
-      }, {passive:false});
-
-      // AUTO pasar páginas
-      const autoBtn = document.getElementById('auto');
-      let autoTimer = null;
-      function startAuto(){
-        stopAuto();
-        autoTimer = setInterval(()=>{
-          const p = $(book).turn('page');
-          if (p >= imgs.length) { stopAuto(); return; }
-          $(book).turn('next');
-        }, 5000);
-        autoBtn.textContent = 'Auto ⏸';
-        autoBtn.dataset.active = '1';
-      }
-      function stopAuto(){
-        if (autoTimer) clearInterval(autoTimer);
-        autoTimer = null;
-        autoBtn.textContent = 'Auto ▷';
-        delete autoBtn.dataset.active;
-      }
-      startAuto();
-      autoBtn.onclick = ()=> autoTimer ? stopAuto() : startAuto();
-
-      ['click','keydown','wheel','touchstart','pointerdown'].forEach(ev=>{
-        book.addEventListener(ev, ()=>{ if (autoTimer) stopAuto(); }, {passive:true});
-      });
-
-      // LUPA (visor)
-      const viewer = document.getElementById('viewer');
-      const vWrap = document.getElementById('vWrap');
-      const vImg  = document.getElementById('vImg');
-      const btnZoom = document.getElementById('zoom');
-      const btnClose = document.getElementById('vClose');
-      const zIn = document.getElementById('zIn');
-      const zOut = document.getElementById('zOut');
-      const zFit = document.getElementById('zFit');
-
-      let scale = 1, origin = {x:0,y:0}, pan = {x:0,y:0}, dragging=false, start={x:0,y:0};
-
-      function setTransform(){
-        vImg.style.transform = `translate(${pan.x}px, ${pan.y}px) scale(${scale})`;
-      }
-      function fitToScreen(){
-        const cw = vWrap.clientWidth, ch = vWrap.clientHeight;
-        const iw = vImg.naturalWidth, ih = vImg.naturalHeight;
-        const s = Math.min(cw/iw, ch/ih);
-        scale = Math.max(1, s);
-        pan = {x: Math.max(0,(cw - iw*scale)/2), y: Math.max(0,(ch - ih*scale)/2)};
-        setTransform();
-      }
-      function openViewerForCurrent(){
-        const p = $(book).turn('page');
-        const curr = book.querySelector(`div:nth-child(${p}) img`);
-        if (!curr) return;
-        vImg.src = curr.src;
-        viewer.classList.add('open');
-        viewer.setAttribute('aria-hidden','false');
-        if (vImg.complete) fitToScreen(); else vImg.onload = fitToScreen;
-      }
-      function closeViewer(){
-        viewer.classList.remove('open');
-        viewer.setAttribute('aria-hidden','true');
-      }
-
-      btnZoom.onclick = openViewerForCurrent;
-      btnClose.onclick = closeViewer;
-      viewer.addEventListener('click', (e)=>{
-        if (e.target === viewer) closeViewer();
-      });
-
-      zIn.onclick = ()=>{ scale = Math.min(scale*1.25, 8); setTransform(); };
-      zOut.onclick = ()=>{ scale = Math.max(scale/1.25, 0.5); setTransform(); };
-      zFit.onclick = ()=> fitToScreen();
-
-      vWrap.addEventListener('dblclick', ()=>{
-        if (scale <= 1.01) { scale = 2; } else { scale = 1; }
-        setTransform();
-      });
-
-      vWrap.addEventListener('pointerdown', (e)=>{ dragging=true; start={x:e.clientX - pan.x, y:e.clientY - pan.y}; vWrap.setPointerCapture(e.pointerId); });
-      vWrap.addEventListener('pointermove', (e)=>{ if(!dragging) return; pan.x = e.clientX - start.x; pan.y = e.clientY - start.y; setTransform(); });
-      vWrap.addEventListener('pointerup', ()=> dragging=false);
-      vWrap.addEventListener('pointercancel', ()=> dragging=false);
-
-      vWrap.addEventListener('wheel', (e)=>{
-        e.preventDefault();
-        const factor = e.deltaY > 0 ? 1/1.15 : 1.15;
-        const prev = scale;
-        scale = Math.min(8, Math.max(0.5, scale*factor));
-        const rect = vWrap.getBoundingClientRect();
-        const cx = e.clientX - rect.left - pan.x;
-        const cy = e.clientY - rect.top  - pan.y;
-        pan.x -= (cx)*(scale/prev - 1);
-        pan.y -= (cy)*(scale/prev - 1);
-        setTransform();
-      }, {passive:false});
     }
-
     mount();
-
   })();
   </script>
 </body>
