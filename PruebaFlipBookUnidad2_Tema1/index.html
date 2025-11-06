@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Flipbook con lupa — Universidad de Córdoba</title>
 
+  <!-- Preload primera página para calcular proporción -->
   <link rel="preload" as="image" href="./img/page-1-b5f394ad.webp" />
 
   <style>
@@ -46,9 +47,13 @@
       position:relative;overflow:hidden;max-width:95vw;max-height:92vh;
       cursor:grab;border-radius:14px;border:1px solid rgba(255,255,255,.2);
       background:#0b1220;
+      touch-action:none;
     }
     .viewer__img-wrap:active{cursor:grabbing;}
-    .viewer__img{user-select:none;pointer-events:none;transform-origin:0 0;display:block;}
+    .viewer__img{
+      user-select:none;pointer-events:none;transform-origin:0 0;display:block;
+      max-width:none; /* IMPORTANTE: permite escalar libremente */
+    }
     .viewer__bar{
       position:fixed;top:16px;left:50%;transform:translateX(-50%);
       display:flex;gap:10px;align-items:center;background:rgba(15,23,42,.92);
@@ -132,6 +137,14 @@
       });
       book.setAttribute('data-mode',isMobile()?'single':'double');
 
+      // Redimensiona en vivo
+      window.addEventListener('resize',()=>{
+        const s=compute();
+        $(book).turn('size', s.bookWidth, s.bookHeight);
+        book.setAttribute('data-mode',isMobile()?'single':'double');
+      });
+
+      // Controles
       const prev=document.getElementById('prev');
       const next=document.getElementById('next');
       const status=document.getElementById('status');
@@ -145,11 +158,13 @@
       prev.onclick=()=>$(book).turn('previous');
       next.onclick=()=>$(book).turn('next');
 
-      // Navegación
+      // Click navega por lados
       book.addEventListener('click',(e)=>{
         const rect=book.getBoundingClientRect();const x=e.clientX-rect.left;
         if(x<rect.width/2)$(book).turn('previous');else $(book).turn('next');
       });
+
+      // Teclado
       window.addEventListener('keydown',(e)=>{
         if(e.key==='ArrowLeft'){e.preventDefault();$(book).turn('previous');}
         if(e.key==='ArrowRight'){e.preventDefault();$(book).turn('next');}
@@ -174,58 +189,113 @@
 
       let scale=1,pan={x:0,y:0},dragging=false,start={x:0,y:0};
 
-      function setTransform(){vImg.style.transform=`translate(${pan.x}px,${pan.y}px) scale(${scale})`;}
+      function clampPan() {
+        const cw = vWrap.clientWidth, ch = vWrap.clientHeight;
+        const iw = vImg.naturalWidth * scale, ih = vImg.naturalHeight * scale;
+
+        // Si la imagen cabe, centramos (permitimos pan 0..0)
+        if (iw <= cw) pan.x = (cw - iw)/2;
+        else {
+          const minX = cw - iw; const maxX = 0;
+          pan.x = Math.min(Math.max(pan.x, minX), maxX);
+        }
+        if (ih <= ch) pan.y = (ch - ih)/2;
+        else {
+          const minY = ch - ih; const maxY = 0;
+          pan.y = Math.min(Math.max(pan.y, minY), maxY);
+        }
+      }
+
+      function setTransform(){
+        clampPan();
+        vImg.style.transform = `translate(${pan.x}px,${pan.y}px) scale(${scale})`;
+      }
+
+      // Zoom manteniendo punto (cx,cy)
+      function zoomAt(factor, cx, cy){
+        const prev = scale;
+        const next = Math.min(8, Math.max(0.5, prev * factor));
+        if (next === prev) return;
+
+        const rect = vWrap.getBoundingClientRect();
+        const ox = cx - rect.left - pan.x;
+        const oy = cy - rect.top  - pan.y;
+
+        scale = next;
+        pan.x -= ox * (scale/prev - 1);
+        pan.y -= oy * (scale/prev - 1);
+        setTransform();
+      }
+
       function fitToScreen(){
-        const cw=vWrap.clientWidth,ch=vWrap.clientHeight;
-        const iw=vImg.naturalWidth,ih=vImg.naturalHeight;
-        const s=Math.min(cw/iw,ch/ih);scale=Math.max(1,s);
-        pan={x:Math.max(0,(cw-iw*scale)/2),y:Math.max(0,(ch-ih*scale)/2)};
+        const cw = vWrap.clientWidth, ch = vWrap.clientHeight;
+        const iw = vImg.naturalWidth, ih = vImg.naturalHeight;
+        const s  = Math.min(cw/iw, ch/ih);
+
+        // Ajusta sin sobre-escalar (no mayor a 1)
+        scale = Math.min(1, s);
+
+        const vw = iw * scale, vh = ih * scale;
+        pan = { x: (cw - vw) / 2, y: (ch - vh) / 2 };
         setTransform();
       }
 
       function openViewerForCurrent(){
-        const p=$(book).turn('page');
-        const curr=book.querySelector(`div:nth-child(${p}) img`);
+        const p = $(book).turn('page');
+        const curr = book.querySelector(`div:nth-child(${p}) img`);
         if(!curr)return;
         vImg.src=curr.src;
         viewer.classList.add('open');
         viewer.setAttribute('aria-hidden','false');
-        if(vImg.complete)fitToScreen();else vImg.onload=fitToScreen;
+        if (vImg.complete) fitToScreen(); else vImg.onload = fitToScreen;
       }
       function closeViewer(){
         viewer.classList.remove('open');
         viewer.setAttribute('aria-hidden','true');
       }
 
+      // Botones Visor
       btnZoom.onclick=openViewerForCurrent;
       btnClose.onclick=closeViewer;
-      viewer.addEventListener('click',(e)=>{if(e.target===viewer)closeViewer();});
+      viewer.addEventListener('click',(e)=>{ if(e.target===viewer) closeViewer(); });
 
-      zIn.onclick=()=>{scale=Math.min(scale*1.25,8);setTransform();};
-      zOut.onclick=()=>{scale=Math.max(scale/1.25,0.5);setTransform();};
-      zFit.onclick=()=>fitToScreen();
+      // Zoom +/- centrado al contenedor
+      function viewerCenterClient(){
+        const r = vWrap.getBoundingClientRect();
+        return { x: r.left + r.width/2, y: r.top + r.height/2 };
+      }
+      zIn.onclick  = () => { const c = viewerCenterClient(); zoomAt(1.25, c.x, c.y); };
+      zOut.onclick = () => { const c = viewerCenterClient(); zoomAt(1/1.25, c.x, c.y); };
+      zFit.onclick = () => fitToScreen();
 
-      vWrap.addEventListener('dblclick',()=>{scale=(scale<=1.01)?2:1;setTransform();});
-      vWrap.addEventListener('pointerdown',(e)=>{dragging=true;start={x:e.clientX-pan.x,y:e.clientY-pan.y};vWrap.setPointerCapture(e.pointerId);});
-      vWrap.addEventListener('pointermove',(e)=>{if(!dragging)return;pan.x=e.clientX-start.x;pan.y=e.clientY-start.y;setTransform();});
-      vWrap.addEventListener('pointerup',()=>dragging=false);
-      vWrap.addEventListener('pointercancel',()=>dragging=false);
+      // Doble clic: si está ajustado, 2x sobre cursor; si no, volver a ajustar
+      vWrap.addEventListener('dblclick',(e)=>{
+        if (scale <= 1.01) zoomAt(2/scale, e.clientX, e.clientY);
+        else fitToScreen();
+      });
+
+      // Rueda: zoom hacia/desde el cursor
       vWrap.addEventListener('wheel',(e)=>{
         e.preventDefault();
-        const factor=e.deltaY>0?1/1.15:1.15;
-        const prev=scale;
-        scale=Math.min(8,Math.max(0.5,scale*factor));
-        const rect=vWrap.getBoundingClientRect();
-        const cx=e.clientX-rect.left-pan.x;
-        const cy=e.clientY-rect.top-pan.y;
-        pan.x-=(cx)*(scale/prev-1);
-        pan.y-=(cy)*(scale/prev-1);
-        setTransform();
+        const factor = e.deltaY > 0 ? 1/1.15 : 1.15;
+        zoomAt(factor, e.clientX, e.clientY);
       },{passive:false});
+
+      // Arrastre (pan)
+      vWrap.addEventListener('pointerdown',(e)=>{
+        dragging=true;start={x:e.clientX-pan.x,y:e.clientY-pan.y};
+        vWrap.setPointerCapture(e.pointerId);
+      });
+      vWrap.addEventListener('pointermove',(e)=>{
+        if(!dragging)return;
+        pan.x=e.clientX-start.x;pan.y=e.clientY-start.y;
+        setTransform();
+      });
+      vWrap.addEventListener('pointerup',()=>dragging=false);
+      vWrap.addEventListener('pointercancel',()=>dragging=false);
     }
     mount();
   })();
   </script>
 </body>
 </html>
-
