@@ -51,7 +51,7 @@
     .viewer__img-wrap:active{cursor:grabbing;}
     .viewer__img{
       user-select:none;pointer-events:none;transform-origin:0 0;display:block;
-      max-width:none; /* para que el scale funcione bien */
+      max-width:none;
     }
     .viewer__bar{
       position:fixed;top:16px;left:50%;transform:translateX(-50%);
@@ -191,7 +191,6 @@
         if(!ready) return;
         const cw = vWrap.clientWidth, ch = vWrap.clientHeight;
         const iw = vImg.naturalWidth * scale, ih = vImg.naturalHeight * scale;
-
         if (!isFinite(iw) || !isFinite(ih) || iw===0 || ih===0) return;
 
         if (iw <= cw) pan.x = (cw - iw)/2;
@@ -227,7 +226,6 @@
         const cw = vWrap.clientWidth, ch = vWrap.clientHeight;
         const iw = vImg.naturalWidth, ih = vImg.naturalHeight;
         if (!iw || !ih) return;
-
         const s  = Math.min(cw/iw, ch/ih);
         scale = Math.min(1, s);
         const vw = iw * scale, vh = ih * scale;
@@ -235,21 +233,41 @@
         setTransform();
       }
 
-      function openViewerForCurrent(){
+      // ✅ Helper robusto: consigue la IMG real de la página actual
+      function getCurrentImgEl(book,$){
         const p = $(book).turn('page');
-        const curr = book.querySelector(`div:nth-child(${p}) img`);
-        if(!curr) return;
+        const $pageEl = $(book).turn('pageElement', p);
+        if ($pageEl && $pageEl.length){
+          const img = $pageEl.find('img').get(0);
+          if (img) return img;
+        }
+        const alt1 = book.querySelector(`.turn-page[page="${p}"] img`);
+        if (alt1) return alt1;
+        // último recurso: construir un <img> temporal con la ruta
+        const img2 = new Image();
+        img2.src = imgs[p-1];
+        return img2;
+      }
 
+      function openViewerForCurrent(){
         // reset estado
         ready = false;
         enableZoomButtons(false);
         scale = 1; pan = {x:0,y:0};
         vImg.style.transform = 'translate(0,0) scale(1)';
-        vImg.src = ''; // evita usar datos viejos cacheados
+        vImg.src = '';
 
-        // abrir overlay primero (para que el tamaño del wrap sea correcto)
+        // abrir overlay antes para medidas correctas
         viewer.classList.add('open');
         viewer.setAttribute('aria-hidden','false');
+
+        const currImgEl = getCurrentImgEl(book,$);
+        if (!currImgEl || !currImgEl.src){
+          // si no hay imagen, cerrar limpio
+          viewer.classList.remove('open');
+          viewer.setAttribute('aria-hidden','true');
+          return;
+        }
 
         vImg.onload = () => {
           ready = true;
@@ -257,7 +275,8 @@
           fitToScreen();
         };
         vImg.onerror = () => { ready=false; enableZoomButtons(false); };
-        vImg.src = curr.src; // dispara carga
+
+        vImg.src = currImgEl.src; // dispara la carga
       }
 
       function closeViewer(){
@@ -265,7 +284,7 @@
         viewer.setAttribute('aria-hidden','true');
         ready=false;
         enableZoomButtons(false);
-        vImg.src=''; // libera y asegura nuevo onload la próxima vez
+        vImg.src='';
       }
 
       btnZoom.onclick=openViewerForCurrent;
@@ -275,7 +294,7 @@
       function viewerCenterClient(){
         const r = vWrap.getBoundingClientRect();
         return { x: r.left + r.width/2, y: r.top + r.height/2 };
-        }
+      }
       zIn.onclick  = () => { const c = viewerCenterClient(); zoomAt(1.25, c.x, c.y); };
       zOut.onclick = () => { const c = viewerCenterClient(); zoomAt(1/1.25, c.x, c.y); };
       zFit.onclick = () => fitToScreen();
@@ -311,3 +330,4 @@
   </script>
 </body>
 </html>
+
