@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Seminario de Investigación | Unidad 1</title>
+<style>
+:root{--verde:#006b3f;--verde2:#19c76f;--verde3:#e8f7ee;--fondo:#f7f9f8;--texto:#12213a;--muted:#65758a;--linea:#dfe9e4;--blanco:#fff;--shadow:0 16px 35px rgba(0,0,0,.09);--radius:22px;--warn:#c96a00;--bad:#c0392b;--ok:#0a8f4a;--azul:#1a4c7a}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:'Segoe UI',Arial,sans-serif;background:var(--fondo);color:var(--texto);line-height:1.65}.app{display:grid;grid-template-columns:310px minmax(0,1fr);min-height:100vh}.sidebar{background:var(--blanco);border-right:1px solid var(--linea);padding:18px 22px;position:sticky;top:0;height:100vh;overflow:auto}.brandBox{padding:12px 10px 18px;border-bottom:1px solid var(--linea);margin-bottom:14px}.brandTitle{font-size:1rem;line-height:1.25;text-transform:uppercase;letter-spacing:.08em;color:var(--verde);font-weight:900}.brandSub{font-size:.78rem;color:var(--muted);margin-top:4px}.course{text-align:left;font-size:.78rem;text-transform:uppercase;letter-spacing:.10em;color:var(--muted);margin-top:10px}.course strong{display:block;color:var(--verde);font-size:.95rem;margin-top:2px;letter-spacing:0}.menu{margin-top:16px}.menu button{width:100%;border:0;background:transparent;color:var(--texto);font-size:1.06rem;text-align:left;padding:15px 14px;margin:5px 0;border-radius:0 14px 14px 0;cursor:pointer;display:flex;align-items:center;gap:12px;border-left:4px solid transparent;transition:.2s}.menu button.active{background:var(--verde3);border-left-color:var(--verde2);color:var(--verde);font-weight:800}.menu button:hover{background:#f1f8f4}.progressBox{margin-top:24px;background:#f5faf7;border:1px solid var(--linea);border-radius:16px;padding:14px}.progressText{font-size:.85rem;color:var(--muted);margin-bottom:8px}.progressTrack{height:10px;background:#dcefe4;border-radius:999px;overflow:hidden}.progressBar{height:100%;width:0;background:linear-gradient(90deg,var(--verde),var(--verde2));transition:.3s}.content{padding:34px 42px 50px}.page{display:none;max-width:1160px;animation:fade .25s ease}.page.active{display:block}@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}h1{font-size:clamp(2rem,4vw,3.45rem);line-height:1.06;color:var(--verde);margin:0 0 14px}h2{font-size:clamp(1.7rem,3vw,2.3rem);color:var(--verde);margin:0 0 16px}h3{color:var(--verde);margin:0 0 10px}.lead{font-size:1.18rem;max-width:920px}.card{background:#fff;border:1px solid var(--linea);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin:18px 0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.mini{background:#fff;border-left:5px solid var(--verde2);border-radius:14px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.06)}.tag{display:inline-block;padding:6px 10px;border-radius:999px;background:var(--verde3);color:var(--verde);font-weight:700;margin:4px;font-size:.86rem}.btn{border:0;border-radius:999px;background:linear-gradient(135deg,var(--verde),var(--verde2));color:#fff;font-weight:800;padding:13px 20px;cursor:pointer;box-shadow:0 10px 25px rgba(11,122,59,.20)}.btn.secondary{background:#fff;color:var(--verde);border:1px solid var(--verde2);box-shadow:none}.heroActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.accordion{margin:18px 0}.accItem{background:#fff;border:1px solid var(--linea);border-radius:18px;margin:12px 0;overflow:hidden;box-shadow:0 8px 22px rgba(0,0,0,.05)}.accHead{width:100%;border:0;background:#fff;padding:18px 20px;text-align:left;font-size:1.05rem;color:var(--texto);font-weight:800;cursor:pointer;display:flex;justify-content:space-between;align-items:center}.accHead span:first-child{display:flex;gap:10px;align-items:center}.accHead .plus{font-size:1.4rem;color:var(--verde);transition:.2s}.accBody{display:none;padding:0 20px 22px;color:#24334b}.accItem.open .accBody{display:block}.accItem.open .plus{transform:rotate(45deg)}.exampleBad{border-left-color:var(--bad)}.exampleOk{border-left-color:var(--ok)}.textarea{width:100%;min-height:120px;border-radius:16px;border:1px solid var(--linea);padding:14px;font:inherit;resize:vertical}.questionCard{border:1px solid var(--linea);background:#fff;border-radius:18px;padding:18px;margin:14px 0}.option{display:block;border:1px solid var(--linea);border-radius:12px;padding:12px;margin:8px 0;cursor:pointer;background:#fbfdfc}.option:hover{border-color:var(--verde2)}.feedback{font-weight:700;margin-top:10px}.resource{display:flex;justify-content:space-between;gap:16px;align-items:center}.qr{width:74px;height:74px;border:1px solid #9be7ba;border-radius:8px;background:linear-gradient(45deg,#111 25%,transparent 25%) 0 0/12px 12px,linear-gradient(-45deg,#111 25%,transparent 25%) 0 0/12px 12px,#fff;opacity:.75}.tableWrap{overflow:auto}.rubric{width:100%;border-collapse:collapse}.rubric th,.rubric td{border:1px solid var(--linea);padding:13px;text-align:left;vertical-align:top}.rubric th{background:var(--verde3);color:var(--verde)}.note{background:#fff7ed;border-left:5px solid var(--warn);border-radius:14px;padding:16px}.footerNav{display:flex;justify-content:space-between;gap:12px;margin-top:28px}.small{color:var(--muted);font-size:.92rem}.pillBox{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.callout{background:#f3fbf7;border:1px solid #c9efd9;border-left:5px solid var(--verde2);border-radius:16px;padding:18px;margin:16px 0}.imageNote{font-size:.82rem;color:var(--muted);margin-top:6px}.wideImg{width:100%;border-radius:18px;border:1px solid var(--linea);box-shadow:var(--shadow)}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto}.content{padding:24px 18px 32px}.grid,.grid2{grid-template-columns:1fr}.menu{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}.menu button{font-size:.95rem;padding:10px}.resource{align-items:flex-start}.card{padding:18px}}
+</style>
+
+<style id="final-u1-fix">
+/* Limpieza visual definitiva Unidad 1 */
+body{
+  margin:0 !important;
+  font-family:Inter,Segoe UI,Roboto,Arial,sans-serif !important;
+  background:linear-gradient(135deg,#f3faf6 0%,#eef6f2 45%,#f8fbfa 100%) !important;
+}
+.app{display:flex !important;min-height:100vh !important;}
+.sidebar{
+  width:300px !important;
+  background:#fff !important;
+  border-right:1px solid #dbe9e2 !important;
+  padding:28px 18px !important;
+  position:fixed !important;
+  top:0 !important;
+  bottom:0 !important;
+  left:0 !important;
+  overflow:auto !important;
+  box-shadow:6px 0 28px rgba(20,52,43,.08) !important;
+}
+.content{
+  margin-left:300px !important;
+  width:calc(100% - 300px) !important;
+  padding:28px !important;
+}
+.brandBox{
+  display:flex !important;
+  align-items:center !important;
+  gap:18px !important;
+  padding:20px 10px 28px 10px !important;
+  margin-bottom:20px !important;
+  border-bottom:1px solid #dbe9e2 !important;
+}
+.unitLogo{
+  width:64px !important;
+  height:64px !important;
+  min-width:64px !important;
+  border-radius:20px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  background:linear-gradient(145deg,#087a46,#0fa66a) !important;
+  color:#fff !important;
+  font-size:28px !important;
+  font-weight:900 !important;
+  box-shadow:0 12px 26px rgba(8,122,70,.25) !important;
+}
+.brandTitle{
+  font-size:21px !important;
+  line-height:1.15 !important;
+  color:#14342b !important;
+  font-weight:900 !important;
+  text-transform:none !important;
+  letter-spacing:0 !important;
+}
+.brandSub{
+  font-size:13px !important;
+  color:#66736f !important;
+  margin-top:7px !important;
+}
+.course{display:none !important;}
+.menu{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:12px !important;
+  margin-top:14px !important;
+}
+.menu button{
+  width:100% !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:11px !important;
+  border:0 !important;
+  border-radius:20px !important;
+  padding:18px 18px !important;
+  font-size:18px !important;
+  font-weight:800 !important;
+  color:#29413a !important;
+  background:transparent !important;
+  text-align:left !important;
+  cursor:pointer !important;
+}
+.menu button.active{
+  background:linear-gradient(90deg,#087a46,#0fa66a) !important;
+  color:#fff !important;
+  box-shadow:0 12px 26px rgba(8,122,70,.20) !important;
+}
+.progressBox{
+  margin-top:28px !important;
+  border-radius:18px !important;
+  padding:18px !important;
+  background:#f6fbf8 !important;
+  border:1px solid #dbe9e2 !important;
+}
+.progressTrack{
+  height:8px !important;
+  background:#dceee5 !important;
+  border-radius:99px !important;
+  overflow:hidden !important;
+}
+.progressBar{
+  height:100% !important;
+  background:linear-gradient(90deg,#087a46,#0d88a8) !important;
+  border-radius:99px !important;
+}
+.introHeroClean{
+  background:
+    radial-gradient(circle at 80% 20%,rgba(255,255,255,.16),transparent 25%),
+    linear-gradient(90deg,rgba(5,77,45,.94),rgba(8,122,70,.76)),
+    linear-gradient(135deg,#064d2d,#0fa66a) !important;
+  border-radius:28px !important;
+  padding:72px 42px !important;
+  color:#fff !important;
+  box-shadow:0 16px 38px rgba(17,54,40,.10) !important;
+  margin-bottom:36px !important;
+  min-height:330px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+}
+.introHeroClean h1{
+  display:block !important;
+  position:static !important;
+  width:auto !important;
+  height:auto !important;
+  margin:0 0 24px 0 !important;
+  padding:0 !important;
+  color:#fff !important;
+  background:none !important;
+  font-size:56px !important;
+  line-height:1.12 !important;
+  letter-spacing:-.8px !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  text-align:left !important;
+  writing-mode:horizontal-tb !important;
+  transform:none !important;
+  white-space:normal !important;
+  overflow:visible !important;
+}
+.introHeroClean p{
+  display:block !important;
+  position:static !important;
+  width:auto !important;
+  height:auto !important;
+  max-width:980px !important;
+  margin:0 !important;
+  padding:0 !important;
+  color:#eafff4 !important;
+  background:none !important;
+  font-size:21px !important;
+  line-height:1.65 !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  text-align:left !important;
+  writing-mode:horizontal-tb !important;
+  transform:none !important;
+  white-space:normal !important;
+}
+.page:not(#intro)>h2,
+.page:not(#intro)>h1{
+  font-size:48px !important;
+  color:#087a46 !important;
+  margin:0 0 18px 0 !important;
+  line-height:1.15 !important;
+}
+body::after{
+  content:"Docente: Yulieth Carriazo Regino" !important;
+  position:fixed !important;
+  left:18px !important;
+  bottom:10px !important;
+  font-size:14px !important;
+  color:#8a9a94 !important;
+  z-index:9999 !important;
+  font-family:Inter,Segoe UI,Arial,sans-serif !important;
+}
+@media(max-width:900px){
+  .app{display:block !important;}
+  .sidebar{position:relative !important;width:100% !important;height:auto !important;}
+  .content{margin-left:0 !important;width:100% !important;padding:16px !important;}
+  .introHeroClean{padding:44px 24px !important;min-height:260px !important;}
+  .introHeroClean h1{font-size:36px !important;}
+  .introHeroClean p{font-size:18px !important;}
+  body::after{position:static !important;display:block !important;padding:12px 18px !important;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<div class="brandBox">
+<div class="unitLogo">U1</div>
+<div class="brandText">
+<div class="brandTitle">Seminario de<br/>Investigación</div>
+<div class="brandSub">Ingeniería de Sistemas · IX semestre</div>
+</div>
+</div>
+<nav class="menu" id="menu">
+<button class="active" data-page="intro">🚀 Introducción</button>
+<button data-page="objetivos">🎯 Objetivos</button>
+<button data-page="contenido">📚 Contenido</button>
+<button data-page="actividades">✍️ Actividades</button>
+<button data-page="bibliografia">📚 Bibliografía</button>
+</nav>
+<div class="progressBox"><div class="progressText">Avance de navegación</div><div class="progressTrack"><div class="progressBar" id="progressBar"></div></div></div>
+</aside>
+<main class="content">
+<section class="page active" id="intro">
+
+<div class="introHeroClean">
+<h1>Introducción a la investigación</h1>
+<p>Ruta guiada para transformar una idea tecnológica en un anteproyecto claro, investigable y pertinente dentro de Ingeniería de Sistemas.</p>
+</div>
+
+
+<div class="card"><h3>Pregunta guía</h3><p><b>¿Cómo convierto una idea de software, datos, redes, IA, IoT o seguridad informática en un proyecto de investigación viable?</b></p></div>
+<div class="grid2">
+<div class="mini"><h3>Lo que se trabajará</h3><p>Tipos de investigación, métodos, identificación del problema, pregunta investigativa y justificación.</p></div>
+<div class="mini"><h3>Producto esperado</h3><p>Primer avance del anteproyecto con problema, pregunta, tipo de investigación, método y justificación inicial.</p></div>
+</div>
+<div class="heroActions"><button class="btn" onclick="goPage('objetivos')">Iniciar ruta</button><button class="btn secondary" onclick="goPage('contenido')">Ir al contenido</button></div>
+</section>
+<section class="page" id="objetivos">
+<h2>Objetivos de aprendizaje</h2>
+<div class="card"><p>Al finalizar esta unidad, el estudiante podrá relacionar los conceptos de investigación con su propio proyecto, fortalecer la formulación del problema y justificar la relevancia académica, profesional, social y tecnológica de su propuesta.</p></div>
+<div class="grid">
+<div class="mini"><h3>Relacionar</h3><p>Conectar investigación científica con proyectos reales de Ingeniería de Sistemas.</p></div>
+<div class="mini"><h3>Formular</h3><p>Construir un problema y una pregunta investigativa clara, delimitada e investigable.</p></div>
+<div class="mini"><h3>Justificar</h3><p>Explicar por qué el proyecto es pertinente y qué impacto puede generar.</p></div>
+</div>
+</section>
+<section class="page" id="contenido">
+<h2>Contenido de la unidad</h2>
+<p class="small">Haz clic en cada bloque para desplegar solo la información que necesitas. Problema, pregunta y justificación ahora están integrados dentro de este apartado.</p>
+<div class="accordion">
+<div class="accItem open"><button class="accHead"><span>🔎 1. ¿Qué significa investigar?</span><span class="plus">+</span></button><div class="accBody"><p>Investigar no es únicamente construir una aplicación, diseñar una red o entrenar un modelo. En el contexto del trabajo de grado, investigar implica identificar una necesidad, delimitarla, sustentarla con evidencia, seleccionar un método y validar una solución, explicación o propuesta.</p><div class="grid2"><div class="mini exampleBad"><b>Débil:</b><br/>“Voy a hacer una app”.</div><div class="mini exampleOk"><b>Mejor:</b><br/>“Evaluar cómo una aplicación móvil incide en el aprendizaje de algoritmos en estudiantes de programación básica”.</div></div></div></div>
+<div class="accItem"><button class="accHead"><span>🧭 2. Tipos de investigación</span><span class="plus">+</span></button><div class="accBody"><p>Los tipos de investigación permiten clasificar qué clase de conocimiento se busca generar con el proyecto.</p><div class="pillBox"><span class="tag">Básica: genera teoría</span><span class="tag">Aplicada: resuelve problemas reales</span><span class="tag">Cuantitativa: mide datos</span><span class="tag">Cualitativa: interpreta percepciones</span><span class="tag">Mixta: integra datos y percepciones</span><span class="tag">Exploratoria</span><span class="tag">Descriptiva</span><span class="tag">Correlacional</span><span class="tag">Explicativa</span></div><div class="callout"><b>Clave para Ingeniería de Sistemas:</b> la mayoría de los proyectos de grado son aplicados, porque buscan resolver una necesidad real mediante una solución tecnológica o metodológica.</div></div></div>
+<div class="accItem"><button class="accHead"><span>🧪 3. Métodos de investigación</span><span class="plus">+</span></button><div class="accBody"><p>El método responde a la pregunta: <b>¿cómo voy a recolectar, analizar y validar la información?</b></p><div class="grid2"><div class="mini"><h3>Cuasi-experimental</h3><p>Comparación antes/después o entre grupos. Útil en apps educativas o mejoras de procesos.</p></div><div class="mini"><h3>No experimental</h3><p>Observación sin manipular variables. Útil en análisis de logs, datasets históricos o diagnósticos.</p></div><div class="mini"><h3>Documental</h3><p>Análisis de artículos, tesis, normas, manuales técnicos o reportes institucionales.</p></div><div class="mini"><h3>De campo</h3><p>Encuestas, entrevistas u observación directa en organizaciones, comunidades o instituciones.</p></div><div class="mini"><h3>I+D</h3><p>Diseño y validación de prototipos de software, hardware, IA, IoT o ciberseguridad.</p></div><div class="mini"><h3>Simulación</h3><p>Modelado computacional de escenarios para evaluar comportamientos o resultados posibles.</p></div></div></div></div>
+<div class="accItem"><button class="accHead"><span>🧩 4. Identificación del problema</span><span class="plus">+</span></button><div class="accBody"><p>El problema es una necesidad concreta, observable y relacionada con la carrera, que aún no tiene una solución satisfactoria y que puede investigarse con datos o evidencias.</p><div class="grid2"><div class="mini"><h3>Pasos</h3><p>Observar la realidad, delimitar, redactar claramente y relacionar el problema con Ingeniería de Sistemas.</p></div><div class="mini"><h3>Claves</h3><p>Debe mostrar una brecha entre la situación actual y la deseada, ser investigable y tener relevancia.</p></div></div><div class="callout"><b>Plantilla:</b> En [contexto], se evidencia [situación problemática], lo cual afecta [población/proceso/sistema]. Esta situación se relaciona con [área de Ingeniería de Sistemas] y requiere ser estudiada porque [consecuencia o brecha].</div><div class="grid2"><div class="mini exampleBad"><b>Error común:</b><br/>“No hay una aplicación”. Eso describe una ausencia de solución, no necesariamente un problema investigativo.</div><div class="mini exampleOk"><b>Mejor:</b><br/>“Los estudiantes presentan dificultades para comprender estructuras repetitivas, evidenciadas en bajo desempeño en ejercicios prácticos; por ello se requiere evaluar una estrategia tecnológica de apoyo”.</div></div></div></div>
+<div class="accItem"><button class="accHead"><span>❓ 5. Pregunta de investigación</span><span class="plus">+</span></button><div class="accBody"><p>La pregunta de investigación es el corazón del proyecto: orienta los objetivos, la metodología y el análisis de resultados.</p><div class="callout"><b>Fórmula práctica:</b><br/>¿Cómo / en qué medida / qué efecto tiene + [tecnología o estrategia] + en + [problema o variable] + en [contexto o población específica]?</div><div class="grid2"><div class="mini exampleBad"><b>Débil:</b><br/>¿Es buena una app para aprender programación?</div><div class="mini exampleOk"><b>Mejor:</b><br/>¿En qué medida el uso de una aplicación móvil mejora el desempeño en ejercicios de algoritmia en estudiantes de primer semestre de Ingeniería de Sistemas?</div></div><div class="pillBox"><span class="tag">Clara</span><span class="tag">Específica</span><span class="tag">Delimitada</span><span class="tag">Investigable</span><span class="tag">No opinativa</span></div></div></div>
+<div class="accItem"><button class="accHead"><span>💡 6. Justificación</span><span class="plus">+</span></button><div class="accBody"><p>La justificación explica por qué vale la pena investigar el tema, quién se beneficia y cuál será su posible impacto.</p><div class="grid"><div class="mini"><h3>Académica</h3><p>¿Qué aporta al conocimiento o al aprendizaje en Ingeniería de Sistemas?</p></div><div class="mini"><h3>Profesional</h3><p>¿Qué competencias fortalece como futuro ingeniero de sistemas?</p></div><div class="mini"><h3>Social</h3><p>¿Qué necesidad de una comunidad, institución o sector productivo atiende?</p></div><div class="mini"><h3>Tecnológica</h3><p>¿Qué herramienta, software, hardware, modelo o arquitectura desarrolla o evalúa?</p></div><div class="mini"><h3>Económica</h3><p>¿Puede reducir costos, mejorar eficiencia o aumentar productividad?</p></div><div class="mini"><h3>Viabilidad</h3><p>¿Puede realizarse con los recursos, tiempo y datos disponibles?</p></div></div><div class="callout"><b>Evita:</b> “Este tema es importante porque sí”. <br/><b>Usa:</b> argumentos sustentados en contexto, beneficiarios, impacto y evidencia.</div></div></div>
+<div class="accItem"><button class="accHead"><span>🧠 7. Ejemplos aplicados</span><span class="plus">+</span></button><div class="accBody"><div class="tableWrap"><table class="rubric"><tr><th>Proyecto</th><th>Propósito</th><th>Enfoque</th><th>Alcance</th></tr><tr><td>Sistema de información hospitalario</td><td>Aplicada</td><td>Cuantitativa</td><td>Descriptivo-explicativo</td></tr><tr><td>Segmentación de red en una organización</td><td>Aplicada</td><td>Cuantitativa</td><td>Explicativo</td></tr><tr><td>App móvil para aprendizaje de algoritmos</td><td>Aplicada</td><td>Mixta</td><td>Explicativo</td></tr><tr><td>Open hardware para calidad del agua</td><td>Aplicada</td><td>Cuantitativa</td><td>Descriptivo-correlacional</td></tr><tr><td>Software libre en pymes</td><td>Aplicada</td><td>Mixta</td><td>Descriptivo-correlacional</td></tr></table></div></div></div>
+</div>
+<div class="card"><h3>Escribe tu primera pregunta de investigación</h3><textarea class="textarea" id="studentQuestion" placeholder="Ejemplo: ¿En qué medida el uso de... mejora/reduce/optimiza... en...? "></textarea><br/><br/><button class="btn" onclick="saveText('studentQuestion')">Guardar avance</button></div>
+</section>
+<section class="page" id="actividades">
+<h2>Actividades de aplicación</h2>
+<div class="accordion">
+<div class="accItem open"><button class="accHead"><span>Actividad 1: Clasifica tu proyecto</span><span class="plus">+</span></button><div class="accBody"><p>Indica propósito, enfoque, alcance y método. Justifica cada elección en máximo cinco líneas.</p></div></div>
+<div class="accItem"><button class="accHead"><span>Actividad 2: Redacta el problema</span><span class="plus">+</span></button><div class="accBody"><p>Incluye contexto, situación actual, brecha, población o sistema afectado y evidencia inicial.</p></div></div>
+<div class="accItem"><button class="accHead"><span>Actividad 3: Formula la pregunta</span><span class="plus">+</span></button><div class="accBody"><p>Convierte el problema en una pregunta clara, delimitada e investigable. Evita preguntas de opinión.</p></div></div>
+<div class="accItem"><button class="accHead"><span>Actividad 4: Justifica el tema</span><span class="plus">+</span></button><div class="accBody"><p>Redacta la justificación desde las dimensiones académica, profesional, social, tecnológica y económica si aplica.</p></div></div>
+</div>
+<div class="card"><h3>Entregable de la unidad</h3><div class="tableWrap"><table class="rubric"><tr><th>Componente</th><th>Debe contener</th></tr><tr><td>Tipo de investigación</td><td>Propósito, enfoque y alcance con justificación breve.</td></tr><tr><td>Método</td><td>Estrategia de recolección y validación de información.</td></tr><tr><td>Problema</td><td>Situación, contexto, brecha, evidencia y relación con Ingeniería de Sistemas.</td></tr><tr><td>Pregunta</td><td>Pregunta clara, delimitada, investigable y coherente.</td></tr><tr><td>Justificación</td><td>Importancia, beneficiarios e impacto esperado.</td></tr></table></div></div>
+</section>
+<section class="page" id="bibliografia">
+<h2>Bibliografía base</h2>
+<div class="card"><p>Material del curso Seminario de Investigación, plan de curso 2026 y documentos de apoyo sobre investigación científica, métodos, técnicas, planteamiento del problema, marco teórico, tipos y diseño de investigación.</p></div>
+<div class="note"><b>Sugerencia para el estudiante:</b> use fuentes académicas recientes, preferiblemente artículos científicos, tesis, libros especializados y documentación técnica confiable.</div>
+<div class="card" style="margin-top:24px">
+<h3>Referencias académicas recomendadas</h3>
+<p>Las siguientes fuentes orientan los temas centrales de la Unidad 1: investigación científica, formulación del problema, diseño metodológico, enfoques de investigación y ciencia abierta.</p>
+</div>
+<div class="grid2" style="margin-top:18px">
+<div class="mini">
+<h3>Hernández Sampieri &amp; Mendoza Torres (2023)</h3>
+<p>Hernández Sampieri, R., &amp; Mendoza Torres, C. P. (2023). <i>Metodología de la investigación: Las rutas cuantitativa, cualitativa y mixta</i> (2.ª ed.). McGraw-Hill Education.</p>
+<p><a href="https://www.mheducation.com.co/metodologia-de-la-investigacion-9786071520319-col" rel="noopener" target="_blank">🌐 Sitio editorial</a></p>
+<p><a href="https://www-ebooks7-24-com.ezproxyucor.unicordoba.edu.co/visorEpub.aspx?i=31455&amp;t=D53A6105-32E0-45BB-A8D4-DC2ECC538298" rel="noopener" target="_blank">📚 Acceso Biblioteca Universidad de Córdoba</a></p>
+</div>
+<div class="mini">
+<h3>Hernández Sampieri et al. (2025)</h3>
+<p>Hernández Sampieri, R., Méndez Valencia, S., Mendoza Torres, C. P., &amp; Cuevas Romo, A. (2025). <i>Fundamentos de investigación</i> (2.ª ed.). McGraw Hill Interamericana.</p>
+<p><a href="https://www-ebooks7-24-com.ezproxyucor.unicordoba.edu.co/visorEpub.aspx?i=43438&amp;t=94857F49-97B6-4C3F-8C0D-4EF1E4822F56" rel="noopener" target="_blank">📚 Acceso Biblioteca Universidad de Córdoba</a></p>
+</div>
+<div class="mini">
+<h3>Arias (2012)</h3>
+<p>Arias, F. G. (2012). <i>El proyecto de investigación: Introducción a la metodología científica</i> (6.ª ed.). Editorial Episteme.</p>
+<p><a href="https://archive.org/details/2012ElProyectoDeInvestigacion" rel="noopener" target="_blank">📖 Consultar referencia</a></p>
+</div>
+<div class="mini">
+<h3>Creswell &amp; Creswell (2023)</h3>
+<p>Creswell, J. W., &amp; Creswell, J. D. (2023). <i>Research design: Qualitative, quantitative, and mixed methods approaches</i> (6th ed.). SAGE Publications.</p>
+<p><a href="https://us.sagepub.com/en-us/nam/research-design/book270550" rel="noopener" target="_blank">🌐 Consultar editorial</a></p>
+</div>
+<div class="mini">
+<h3>OECD (2015)</h3>
+<p>OECD. (2015). <i>Frascati Manual 2015: Guidelines for Collecting and Reporting Data on Research and Experimental Development</i>. OECD Publishing.</p>
+<p><a href="https://doi.org/10.1787/9789264239012-en" rel="noopener" target="_blank">🌐 Consultar documento</a></p>
+</div>
+<div class="mini">
+<h3>UNESCO (2021)</h3>
+<p>UNESCO. (2021). <i>Recomendación sobre la ciencia abierta</i>. UNESCO.</p>
+<p><a href="https://unesdoc.unesco.org/ark:/48223/pf0000379949_spa" rel="noopener" target="_blank">🌐 Consultar documento</a></p>
+</div>
+</div>
+</section>
+<div class="footerNav"><button class="btn secondary" onclick="prevPage()">← Anterior</button><button class="btn" onclick="nextPage()">Siguiente →</button></div>
+</main>
+</div>
+<script>
+let scormAPI=null;function findAPI(win){let tries=0;while(win&&!win.API&&win.parent&&win.parent!==win&&tries<7){tries++;win=win.parent}return win&&win.API?win.API:null}function scormInit(){scormAPI=findAPI(window);if(scormAPI){try{scormAPI.LMSInitialize('');scormAPI.LMSSetValue('cmi.core.lesson_status','incomplete');scormAPI.LMSCommit('')}catch(e){}}}function scormScore(score){if(scormAPI){try{scormAPI.LMSSetValue('cmi.core.score.raw',String(score));scormAPI.LMSSetValue('cmi.core.lesson_status',score>=70?'passed':'completed');scormAPI.LMSCommit('')}catch(e){}}}
+const pages=[...document.querySelectorAll('.page')].map(p=>p.id);const visited=new Set(JSON.parse(localStorage.getItem('u1visited_v2')||'[]'));
+function updateProgress(){visited.add(document.querySelector('.page.active').id);localStorage.setItem('u1visited_v2',JSON.stringify([...visited]));document.getElementById('progressBar').style.width=Math.round(visited.size/pages.length*100)+'%'}
+function goPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.menu button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});updateProgress()}
+function nextPage(){const cur=document.querySelector('.page.active').id;goPage(pages[Math.min(pages.indexOf(cur)+1,pages.length-1)])}function prevPage(){const cur=document.querySelector('.page.active').id;goPage(pages[Math.max(pages.indexOf(cur)-1,0)])}
+document.querySelectorAll('.menu button').forEach(b=>b.addEventListener('click',()=>goPage(b.dataset.page)));
+document.querySelectorAll('.accHead').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('open')));
+document.querySelectorAll('.questionCard input').forEach(inp=>inp.addEventListener('change',e=>{const q=e.target.closest('.questionCard');const ok=e.target.value===q.dataset.answer;const f=q.querySelector('.feedback');f.textContent=ok?'Correcto. Este criterio está alineado con la formulación investigativa.':'Revisa el concepto antes de continuar.';f.style.color=ok?'var(--ok)':'var(--warn)'}));
+function gradeQuiz(){const qs=[...document.querySelectorAll('.questionCard')];let ok=0;qs.forEach(q=>{const c=q.querySelector('input:checked');if(c&&c.value===q.dataset.answer)ok++});const score=Math.round(ok/qs.length*100);document.getElementById('score').textContent='Resultado: '+score+'%. '+(score>=70?'Buen avance. Puedes continuar con el entregable.':'Conviene repasar problema, tipo de investigación y pregunta investigativa.');scormScore(score)}
+function saveText(id){localStorage.setItem(id,document.getElementById(id).value);alert('Avance guardado en este navegador.')}window.addEventListener('load',()=>{scormInit();document.getElementById('studentQuestion').value=localStorage.getItem('studentQuestion')||'';updateProgress()});window.addEventListener('beforeunload',()=>{if(scormAPI){try{scormAPI.LMSFinish('')}catch(e){}}});
+</script>
+
+</body>
+</html>
