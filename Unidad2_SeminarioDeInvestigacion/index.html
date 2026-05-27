@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seminario de Investigación · Unidad 2</title>
+  <style>
+:root{
+  --green:#087a46;
+  --green-2:#0fa66a;
+  --dark:#14342b;
+  --soft:#edf8f2;
+  --soft-2:#f7fbf8;
+  --text:#23312d;
+  --muted:#66736f;
+  --card:#ffffff;
+  --line:#dbe9e2;
+  --accent:#0d88a8;
+  --warning:#f5a524;
+  --danger:#c0392b;
+  --shadow:0 16px 38px rgba(17,54,40,.10);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--text);
+  background:linear-gradient(135deg,#f3faf6 0%,#eef6f2 45%,#f8fbfa 100%);
+}
+.app{min-height:100vh;display:flex}
+.sidebar{
+  width:300px;
+  background:rgba(255,255,255,.94);
+  border-right:1px solid var(--line);
+  padding:22px 18px;
+  position:fixed;
+  top:0;bottom:0;left:0;
+  overflow:auto;
+  box-shadow:6px 0 28px rgba(20,52,43,.08);
+  z-index:10;
+}
+.brand{
+  display:flex;gap:12px;align-items:center;
+  padding:10px 8px 20px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:14px;
+}
+.logo{
+  width:46px;height:46px;border-radius:15px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(145deg,var(--green),var(--green-2));
+  color:white;font-weight:800;font-size:20px;
+  box-shadow:0 10px 24px rgba(8,122,70,.26);
+}
+.brand h1{font-size:18px;line-height:1.2;margin:0;color:var(--dark)}
+.brand p{font-size:12px;margin:4px 0 0;color:var(--muted)}
+.nav a{
+  display:flex;align-items:center;gap:11px;
+  padding:13px 13px;
+  color:#29413a;text-decoration:none;
+  border-radius:16px;
+  margin:7px 0;
+  font-weight:650;
+  transition:.18s ease;
+}
+.nav a:hover{background:var(--soft);transform:translateX(3px)}
+.nav a.active{
+  background:linear-gradient(90deg,var(--green),var(--green-2));
+  color:#fff;
+  box-shadow:0 10px 22px rgba(8,122,70,.22);
+}
+.progress-box{
+  margin-top:18px;background:#f6fbf8;border:1px solid var(--line);
+  padding:14px;border-radius:18px;
+}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px}
+.progress-track{height:8px;background:#dceee5;border-radius:99px;overflow:hidden}
+.progress-bar{height:100%;width:20%;background:linear-gradient(90deg,var(--green),var(--accent));border-radius:99px;transition:.3s ease}
+.main{
+  margin-left:300px;
+  padding:28px;
+  width:calc(100% - 300px);
+}
+.hero{
+  border-radius:28px;
+  min-height:260px;
+  padding:34px;
+  color:white;
+  background:
+    linear-gradient(90deg,rgba(5,77,45,.90),rgba(8,122,70,.72)),
+    url("../assets/imagen_1_banner.png"),
+    url("../assets/imagen_1_banner.svg");
+  background-size:cover;
+  background-position:center;
+  box-shadow:var(--shadow);
+  display:flex;align-items:flex-end;
+  margin-bottom:24px;
+}
+.hero h2{font-size:38px;margin:0 0 10px;letter-spacing:-.7px}
+.hero p{font-size:18px;max-width:850px;margin:0;color:#eafff4;line-height:1.55}
+.badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.badge{
+  background:rgba(255,255,255,.17);
+  border:1px solid rgba(255,255,255,.28);
+  backdrop-filter:blur(8px);
+  color:#fff;padding:8px 12px;border-radius:999px;font-size:13px;font-weight:700
+}
+.section{
+  display:none;
+  animation:fadeUp .25s ease both;
+}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  padding:24px;
+}
+.card h3{margin:0 0 12px;color:var(--dark);font-size:24px}
+.card p{line-height:1.65;color:#344944}
+.lead{font-size:18px;line-height:1.7;color:#36544a}
+.col-4{grid-column:span 4}
+.col-6{grid-column:span 6}
+.col-8{grid-column:span 8}
+.col-12{grid-column:span 12}
+.kpi{
+  display:flex;gap:14px;align-items:flex-start;
+  padding:18px;border-radius:20px;background:var(--soft-2);border:1px solid var(--line);
+}
+.kpi .icon{font-size:28px}
+.kpi strong{display:block;color:var(--dark);margin-bottom:5px}
+.kpi span{color:var(--muted);line-height:1.45}
+.accordion{display:flex;flex-direction:column;gap:14px}
+.acc-item{
+  background:#fff;border:1px solid var(--line);border-radius:20px;
+  overflow:hidden;box-shadow:0 8px 22px rgba(17,54,40,.06)
+}
+.acc-head{
+  padding:18px 20px;
+  cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
+  background:linear-gradient(90deg,#ffffff,#f2fbf6);
+  font-weight:800;color:var(--dark);
+}
+.acc-head:hover{background:#edf8f2}
+.acc-head .left{display:flex;gap:12px;align-items:center}
+.acc-head .num{
+  width:34px;height:34px;border-radius:12px;
+  background:linear-gradient(145deg,var(--green),var(--green-2));
+  color:white;display:flex;align-items:center;justify-content:center;font-weight:800
+}
+.acc-content{display:none;padding:0 22px 22px}
+.acc-item.open .acc-content{display:block}
+.acc-item.open .chev{transform:rotate(180deg)}
+.chev{transition:.2s}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.note{
+  background:#eef8f2;border-left:5px solid var(--green);
+  padding:15px 16px;border-radius:14px;margin:14px 0;line-height:1.55
+}
+.warn{
+  background:#fff6e6;border-left:5px solid var(--warning);
+  padding:15px 16px;border-radius:14px;margin:14px 0;line-height:1.55
+}
+.error{
+  background:#fff0ee;border-left:5px solid var(--danger);
+  padding:15px 16px;border-radius:14px;margin:14px 0;line-height:1.55
+}
+.table-wrap{overflow:auto;border-radius:18px;border:1px solid var(--line);margin:14px 0;background:white}
+table{width:100%;border-collapse:collapse;min-width:650px}
+th,td{padding:13px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#eaf7ef;color:var(--dark)}
+tr:last-child td{border-bottom:0}
+.mini-gantt{display:grid;gap:8px;margin-top:15px}
+.gantt-row{display:grid;grid-template-columns:190px repeat(8,1fr);gap:5px;align-items:center;font-size:13px}
+.gantt-label{font-weight:700;color:var(--dark)}
+.cell{height:22px;background:#edf3f0;border-radius:6px}
+.cell.on{background:linear-gradient(90deg,var(--green),var(--green-2))}
+.activity{
+  border:1px solid var(--line);border-radius:20px;background:white;padding:20px;margin:14px 0;
+}
+.activity h4{margin:0 0 10px;font-size:19px;color:var(--dark)}
+.checklist label{
+  display:block;margin:10px 0;padding:12px 14px;background:#f7fbf8;border:1px solid var(--line);border-radius:14px;cursor:pointer
+}
+.checklist input{margin-right:8px;transform:scale(1.15)}
+.ref-card{
+  background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;margin:14px 0;
+  box-shadow:0 8px 22px rgba(17,54,40,.06)
+}
+.ref-card h3{font-size:18px;margin:0 0 8px;color:var(--green)}
+.ref-card p{margin:0 0 12px;line-height:1.55}
+.ref-card a{
+  display:inline-block;margin:4px 8px 4px 0;
+  padding:9px 12px;border-radius:12px;
+  background:var(--soft);color:var(--green);text-decoration:none;font-weight:800;
+  border:1px solid #cde8d8;
+}
+.footer-note{color:var(--muted);font-size:13px;margin-top:20px}
+@media (max-width:900px){
+  .sidebar{position:relative;width:100%;height:auto;bottom:auto}
+  .app{display:block}
+  .main{margin-left:0;width:100%;padding:16px}
+  .hero{padding:24px;min-height:230px}
+  .hero h2{font-size:29px}
+  .grid{display:block}
+  .card{margin-bottom:16px}
+  .two-col{grid-template-columns:1fr}
+  .gantt-row{grid-template-columns:140px repeat(8,26px)}
+}
+</style>
+
+<style>
+.biblio-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
+gap:24px;
+margin-top:20px;
+}
+.ref-card{
+background:#ffffff;
+border-left:6px solid #18b76a;
+border-radius:22px;
+padding:28px;
+box-shadow:0 10px 24px rgba(0,0,0,.08);
+transition:.2s ease;
+}
+.ref-card:hover{
+transform:translateY(-3px);
+}
+.ref-card h3{
+font-size:24px;
+color:#006b43;
+margin-bottom:18px;
+line-height:1.4;
+}
+.ref-card p{
+font-size:17px;
+line-height:1.8;
+color:#1d2d35;
+}
+.ref-card a{
+display:inline-block;
+margin-top:12px;
+font-size:16px;
+color:#4a00c8;
+font-weight:500;
+text-decoration:underline;
+}
+</style>
+
+
+<style>
+/* Ajuste final bibliografía: 2 tarjetas por fila en escritorio */
+.biblio-grid{
+  display:grid !important;
+  grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+  gap:28px !important;
+  align-items:stretch !important;
+}
+.biblio-grid .ref-card{
+  min-height:310px !important;
+  height:100% !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:flex-start !important;
+  background:#fff !important;
+  border-left:6px solid #18b76a !important;
+  border-radius:22px !important;
+  padding:28px 30px !important;
+  box-shadow:0 10px 24px rgba(0,0,0,.08) !important;
+}
+.biblio-grid .ref-card h3{
+  color:#006b43 !important;
+  font-size:24px !important;
+  line-height:1.35 !important;
+  margin:0 0 18px 0 !important;
+}
+.biblio-grid .ref-card p{
+  font-size:17px !important;
+  line-height:1.75 !important;
+  color:#001b3d !important;
+  margin:0 0 14px 0 !important;
+}
+.biblio-grid .ref-card a{
+  display:inline-block !important;
+  margin:8px 12px 0 0 !important;
+  color:#3c00b8 !important;
+  text-decoration:underline !important;
+  font-size:16px !important;
+  font-weight:500 !important;
+}
+@media(max-width:1000px){
+  .biblio-grid{
+    grid-template-columns:1fr !important;
+  }
+  .biblio-grid .ref-card{
+    min-height:auto !important;
+  }
+}
+</style>
+
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">U2</div>
+      <div>
+        <h1>Seminario de Investigación</h1>
+        <p>Ingeniería de Sistemas · IX semestre</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="#" id="nav-intro" onclick="showSection('intro')">🚀 Introducción</a>
+      <a href="#" id="nav-objetivos" onclick="showSection('objetivos')">🎯 Objetivos</a>
+      <a href="#" id="nav-contenido" onclick="showSection('contenido')">📚 Contenido</a>
+      <a href="#" id="nav-actividades" onclick="showSection('actividades')">✍️ Actividades</a>
+      <a href="#" id="nav-bibliografia" onclick="showSection('bibliografia')">📖 Bibliografía</a>
+    </nav>
+    <div class="progress-box">
+      <div class="progress-label"><span>Avance de navegación</span><strong id="progressText">20%</strong></div>
+      <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="hero" id="heroBanner">
+      <div>
+        <div class="badge-row">
+          <span class="badge">Unidad 2</span>
+          <span class="badge">Diseño metodológico</span>
+          <span class="badge">Proyecto tecnológico</span>
+        </div>
+        <h2>Marco conceptual, metodología, alcances, cronograma y presupuesto</h2>
+        <p>Una ruta práctica para transformar una idea de investigación en un proyecto viable, sustentado y listo para avanzar hacia el desarrollo técnico en la Unidad 3.</p>
+      </div>
+    </header>
+
+    <section id="intro" class="section">
+      <div class="grid">
+        <div class="card col-8">
+          <h3>¿Qué busca esta unidad?</h3>
+          <p class="lead">En la Unidad 2 el estudiante pasa de la formulación inicial del proyecto a su organización técnica e investigativa. El propósito es que cada equipo defina con claridad qué conceptos sustentan su trabajo, cómo desarrollará y validará la solución, qué alcance tendrá, qué recursos necesita y cómo organizará el tiempo de ejecución.</p>
+          <div class="note"><strong>Idea central:</strong> si la metodología está mal diseñada, el desarrollo del proyecto será improvisado. Esta unidad prepara el camino para que en la Unidad 3 los estudiantes alcancen avances significativos, cercanos al 80% del desarrollo del proyecto.</div>
+        </div>
+        <div class="card col-4">
+          <h3>Producto esperado</h3>
+          <div class="kpi"><div class="icon">🧩</div><div><strong>Marco conceptual</strong><span>Conceptos clave relacionados con el problema y la solución tecnológica.</span></div></div><br>
+          <div class="kpi"><div class="icon">🧪</div><div><strong>Metodología</strong><span>Ruta técnica e investigativa para desarrollar y validar el proyecto.</span></div></div><br>
+          <div class="kpi"><div class="icon">📅</div><div><strong>Plan de ejecución</strong><span>Alcances, cronograma y presupuesto coherentes con el anteproyecto.</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="objetivos" class="section"><div style="margin-bottom:18px;"><h2 style="font-size:48px;color:#087a46;margin:0;">Objetivos de aprendizaje</h2></div>
+      <div class="card">
+        <h3>Objetivos de aprendizaje</h3>
+        <p class="lead">Al finalizar esta unidad, el estudiante estará en capacidad de diseñar la estructura metodológica y operativa de su proyecto de investigación aplicada en Ingeniería de Sistemas.</p>
+        <div class="grid">
+          <div class="col-6 kpi"><div class="icon">📘</div><div><strong>Construir el marco conceptual</strong><span>Seleccionar, definir y relacionar conceptos, tecnologías, variables y antecedentes que sustentan el proyecto.</span></div></div>
+          <div class="col-6 kpi"><div class="icon">⚙️</div><div><strong>Diseñar la metodología</strong><span>Definir enfoque, tipo de investigación, diseño, técnicas, instrumentos, población, muestra, métricas y validación.</span></div></div>
+          <div class="col-6 kpi"><div class="icon">🎚️</div><div><strong>Delimitar alcances</strong><span>Precisar qué hará el proyecto, qué no hará y cuáles son sus limitaciones técnicas e investigativas.</span></div></div>
+          <div class="col-6 kpi"><div class="icon">🗓️</div><div><strong>Planificar la ejecución</strong><span>Organizar actividades, tiempos, entregables y recursos para avanzar hacia el desarrollo del proyecto.</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contenido" class="section"><div style="margin-bottom:18px;"><h2 style="font-size:48px;color:#087a46;margin:0;">Contenido de la unidad</h2></div>
+      <div class="card">
+        <h3>Contenido de la unidad</h3>
+        <p class="lead">Explora cada apartado. Cada bloque combina el componente investigativo con el componente técnico propio de los proyectos de Ingeniería de Sistemas.</p>
+
+        <div class="accordion">
+
+          <div class="acc-item open">
+            <div class="acc-head" onclick="toggleAcc(this)">
+              <div class="left"><span class="num">1</span>Marco conceptual</div><span class="chev">⌄</span>
+            </div>
+            <div class="acc-content">
+              <p>El marco conceptual organiza los conceptos, tecnologías, teorías, antecedentes y variables que permiten comprender el problema y sustentar la solución propuesta.</p>
+              <div class="two-col">
+                <div class="note"><strong>Componente investigativo:</strong> revisión de autores, conceptos, antecedentes, teorías, categorías, variables y relación con el problema de investigación.</div>
+                <div class="note"><strong>Componente ingenieril:</strong> tecnologías, frameworks, algoritmos, arquitecturas, modelos, herramientas y estándares que soportan la solución.</div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Tipo de proyecto</th><th>Conceptos clave sugeridos</th><th>Relación con el problema</th></tr></thead>
+                  <tbody>
+                    <tr><td>Aplicación web</td><td>Arquitectura cliente-servidor, bases de datos, usabilidad, seguridad</td><td>Explica cómo la solución organiza y protege la información.</td></tr>
+                    <tr><td>Inteligencia artificial</td><td>Machine learning, dataset, entrenamiento, métricas, sesgo algorítmico</td><td>Sustenta cómo se predicen, clasifican o detectan patrones.</td></tr>
+                    <tr><td>IoT</td><td>Sensores, microcontroladores, telemetría, comunicación, validación de datos</td><td>Explica cómo se capturan y procesan datos del entorno físico.</td></tr>
+                    <tr><td>Dashboard / BI</td><td>Analítica descriptiva, indicadores, visualización, toma de decisiones</td><td>Soporta la interpretación de datos para resolver una necesidad.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="error"><strong>Error frecuente:</strong> copiar definiciones aisladas sin conectarlas con el problema, la metodología o el desarrollo técnico.</div>
+              <div class="warn"><strong>Recomendación:</strong> cada concepto incluido debe responder: ¿por qué es necesario para comprender mi proyecto?</div>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <div class="acc-head" onclick="toggleAcc(this)">
+              <div class="left"><span class="num">2</span>Metodología</div><span class="chev">⌄</span>
+            </div>
+            <div class="acc-content">
+              <p>La metodología define cómo se realizará la investigación y cómo se desarrollará, probará o validará la solución tecnológica.</p>
+              <div class="two-col">
+                <div class="note"><strong>Componente investigativo:</strong> enfoque, tipo de investigación, diseño, población, muestra, técnicas, instrumentos, variables, análisis de datos y validación.</div>
+                <div class="note"><strong>Componente ingenieril:</strong> arquitectura, stack tecnológico, módulos, pruebas, prototipo, desarrollo incremental, datasets, APIs o hardware.</div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Proyecto</th><th>Metodología técnica</th><th>Metodología investigativa</th><th>Validación sugerida</th></tr></thead>
+                  <tbody>
+                    <tr><td>App educativa</td><td>Prototipado / desarrollo incremental</td><td>Mixta, aplicada, cuasi-experimental</td><td>Encuesta de percepción + comparación de desempeño</td></tr>
+                    <tr><td>Modelo IA</td><td>Entrenamiento, prueba y evaluación de modelo</td><td>Cuantitativa, experimental</td><td>Accuracy, precision, recall, F1-score</td></tr>
+                    <tr><td>Dashboard BI</td><td>ETL, modelado, visualización de indicadores</td><td>Cuantitativa, descriptiva</td><td>Validación de indicadores con usuarios expertos</td></tr>
+                    <tr><td>Sistema IoT</td><td>Diseño de prototipo, sensado y transmisión</td><td>Aplicada, experimental/de campo</td><td>Comparación con mediciones de referencia</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="warn"><strong>Pregunta clave:</strong> ¿cada objetivo específico tiene una actividad metodológica clara para cumplirse?</div>
+              <div class="error"><strong>Error frecuente:</strong> escribir “se usará metodología mixta” sin explicar qué datos se recogerán, con qué instrumentos y cómo se analizarán.</div>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <div class="acc-head" onclick="toggleAcc(this)">
+              <div class="left"><span class="num">3</span>Alcances y limitaciones</div><span class="chev">⌄</span>
+            </div>
+            <div class="acc-content">
+              <p>Los alcances indican lo que el proyecto sí realizará. Las limitaciones reconocen restricciones reales que pueden afectar su desarrollo o validación.</p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Elemento</th><th>Ejemplo claro</th><th>Ejemplo débil</th></tr></thead>
+                  <tbody>
+                    <tr><td>Alcance técnico</td><td>El sistema permitirá registrar usuarios, procesar datos y visualizar indicadores en un dashboard.</td><td>El sistema será completo y solucionará todo el problema.</td></tr>
+                    <tr><td>Alcance investigativo</td><td>El estudio validará la percepción de utilidad mediante encuesta aplicada a usuarios piloto.</td><td>Se comprobará que el sistema es excelente.</td></tr>
+                    <tr><td>Limitación</td><td>La validación se realizará con una muestra institucional limitada por disponibilidad de participantes.</td><td>No se hizo más porque no hubo tiempo.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="note"><strong>Alcances técnicos:</strong> módulos, funcionalidades, integración, prototipo, arquitectura, base de datos, APIs, sensores o dashboard.</div>
+              <div class="note"><strong>Alcances investigativos:</strong> población, muestra, variables, instrumentos, periodo de estudio, tipo de datos y nivel de validación.</div>
+              <div class="error"><strong>Error frecuente:</strong> prometer más de lo que se puede desarrollar en el semestre.</div>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <div class="acc-head" onclick="toggleAcc(this)">
+              <div class="left"><span class="num">4</span>Cronograma de actividades</div><span class="chev">⌄</span>
+            </div>
+            <div class="acc-content">
+              <p>El cronograma organiza la ruta de trabajo y conecta la metodología con entregables concretos. Debe incluir actividades investigativas y actividades técnicas.</p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Fase</th><th>Actividad</th><th>Entregable</th></tr></thead>
+                  <tbody>
+                    <tr><td>Fundamentación</td><td>Revisión de literatura y definición conceptual</td><td>Marco conceptual organizado</td></tr>
+                    <tr><td>Diseño</td><td>Arquitectura, metodología e instrumentos</td><td>Modelo metodológico y técnico</td></tr>
+                    <tr><td>Desarrollo</td><td>Construcción de prototipo, app, dashboard o modelo</td><td>Versión funcional inicial</td></tr>
+                    <tr><td>Validación</td><td>Aplicación de pruebas, encuestas o métricas</td><td>Resultados preliminares</td></tr>
+                    <tr><td>Documentación</td><td>Redacción de avances y anexos técnicos</td><td>Informe de avance</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="mini-gantt">
+                <div class="gantt-row"><div class="gantt-label">Actividad</div><div>S1</div><div>S2</div><div>S3</div><div>S4</div><div>S5</div><div>S6</div><div>S7</div><div>S8</div></div>
+                <div class="gantt-row"><div class="gantt-label">Marco conceptual</div><div class="cell on"></div><div class="cell on"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+                <div class="gantt-row"><div class="gantt-label">Metodología</div><div class="cell"></div><div class="cell on"></div><div class="cell on"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+                <div class="gantt-row"><div class="gantt-label">Diseño técnico</div><div class="cell"></div><div class="cell"></div><div class="cell on"></div><div class="cell on"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+                <div class="gantt-row"><div class="gantt-label">Desarrollo inicial</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell on"></div><div class="cell on"></div><div class="cell on"></div><div class="cell"></div><div class="cell"></div></div>
+                <div class="gantt-row"><div class="gantt-label">Validación y avance</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell on"></div><div class="cell on"></div><div class="cell on"></div></div>
+              </div>
+              <div class="warn"><strong>Recomendación:</strong> el cronograma debe preparar al equipo para llegar a la Unidad 3 con una ruta realista hacia el 80% de avance del proyecto.</div>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <div class="acc-head" onclick="toggleAcc(this)">
+              <div class="left"><span class="num">5</span>Presupuesto</div><span class="chev">⌄</span>
+            </div>
+            <div class="acc-content">
+              <p>El presupuesto muestra los recursos necesarios para ejecutar el proyecto. Debe ser realista, justificado y coherente con la metodología.</p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Tipo de recurso</th><th>Ejemplos en Ingeniería de Sistemas</th><th>Justificación</th></tr></thead>
+                  <tbody>
+                    <tr><td>Software</td><td>Power BI, Figma, GitHub, herramientas de desarrollo, APIs</td><td>Diseño, desarrollo, análisis o despliegue de la solución.</td></tr>
+                    <tr><td>Hardware</td><td>ESP32, sensores, cámaras, servidor, computador</td><td>Captura de datos, pruebas o ejecución del prototipo.</td></tr>
+                    <tr><td>Servicios</td><td>Hosting, dominio, internet, nube, almacenamiento</td><td>Publicación, operación o validación del sistema.</td></tr>
+                    <tr><td>Trabajo de campo</td><td>Transporte, encuestas, impresión, papelería</td><td>Recolección de datos o validación con usuarios.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="note"><strong>Regla de coherencia:</strong> si un recurso aparece en el presupuesto, debe estar relacionado con una actividad del cronograma y con una decisión metodológica.</div>
+              <div class="error"><strong>Error frecuente:</strong> incluir costos sin explicación o dejar por fuera recursos necesarios para la validación del proyecto.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="actividades" class="section"><div style="margin-bottom:18px;"><h2 style="font-size:48px;color:#087a46;margin:0;">Actividades de aplicación</h2></div>
+      <div class="card">
+        <h3>Actividades de aplicación</h3>
+        <p class="lead">Estas actividades están diseñadas para que cada equipo avance en la construcción real de su anteproyecto y prepare la ejecución de la Unidad 3.</p>
+
+        <div class="activity">
+          <h4>Actividad 1 · Mapa conceptual del proyecto</h4>
+          <p>Identifique entre 6 y 10 conceptos clave de su proyecto. Clasifíquelos en tecnológicos, metodológicos e investigativos. Relacione cada concepto con el problema planteado.</p>
+          <div class="checklist">
+            <label><input type="checkbox"> Incluye autores o fuentes académicas.</label>
+            <label><input type="checkbox"> Relaciona conceptos con el problema.</label>
+            <label><input type="checkbox"> Incluye tecnologías o herramientas del proyecto.</label>
+          </div>
+        </div>
+
+        <div class="activity">
+          <h4>Actividad 2 · Diseño metodológico</h4>
+          <p>Construya una tabla donde indique enfoque, tipo de investigación, diseño, población, muestra, técnicas, instrumentos, métricas y forma de análisis.</p>
+          <div class="checklist">
+            <label><input type="checkbox"> La metodología responde a los objetivos.</label>
+            <label><input type="checkbox"> Incluye validación técnica e investigativa.</label>
+            <label><input type="checkbox"> Explica cómo se recolectarán y analizarán los datos.</label>
+          </div>
+        </div>
+
+        <div class="activity">
+          <h4>Actividad 3 · Alcance, cronograma y presupuesto</h4>
+          <p>Defina qué se desarrollará, qué no se desarrollará, cuáles son las limitaciones, qué actividades se ejecutarán y qué recursos se requieren.</p>
+          <div class="checklist">
+            <label><input type="checkbox"> El alcance es realista para el semestre.</label>
+            <label><input type="checkbox"> El cronograma incluye actividades técnicas e investigativas.</label>
+            <label><input type="checkbox"> El presupuesto está justificado y conectado con la metodología.</label>
+          </div>
+        </div>
+
+        <div class="note"><strong>Entrega sugerida:</strong> documento de avance con marco conceptual, metodología, alcances, cronograma y presupuesto. Este documento debe quedar listo para orientar el desarrollo del proyecto en la Unidad 3.</div>
+      </div>
+    </section>
+
+    <section id="bibliografia" class="section"><div style="margin-bottom:18px;"><h2 style="font-size:48px;color:#087a46;margin:0;">Bibliografía recomendada</h2></div>
+      <div class="card">
+        <h3>Bibliografía recomendada</h3>
+        <p class="lead">Fuentes académicas y metodológicas sugeridas para fortalecer el marco conceptual, el diseño metodológico y la planificación del proyecto.</p>
+
+        <div class="biblio-grid">
+<div class="ref-card">
+          <h3>Hernández Sampieri & Mendoza Torres (2023)</h3>
+          <p>Hernández Sampieri, R., & Mendoza Torres, C. P. (2023). <i>Metodología de la investigación: Las rutas cuantitativa, cualitativa y mixta</i> (2.ª ed.). McGraw-Hill Education.</p>
+          <a href="https://www.mheducation.com.co/metodologia-de-la-investigacion-9786071520319-col" target="_blank">🌐 Sitio editorial</a>
+          <a href="https://www-ebooks7-24-com.ezproxyucor.unicordoba.edu.co/visorEpub.aspx?i=31455&t=D53A6105-32E0-45BB-A8D4-DC2ECC538298" target="_blank">📚 Biblioteca U. de Córdoba</a>
+        </div>
+
+        <div class="ref-card">
+          <h3>Hernández Sampieri et al. (2025)</h3>
+          <p>Hernández Sampieri, R., Méndez Valencia, S., Mendoza Torres, C. P., & Cuevas Romo, A. (2025). <i>Fundamentos de investigación</i> (2.ª ed.). McGraw Hill Interamericana.</p>
+          <a href="https://www-ebooks7-24-com.ezproxyucor.unicordoba.edu.co/visorEpub.aspx?i=43438&t=94857F49-97B6-4C3F-8C0D-4EF1E4822F56" target="_blank">📚 Biblioteca U. de Córdoba</a>
+        </div>
+
+        <div class="ref-card">
+          <h3>Arias (2012)</h3>
+          <p>Arias, F. G. (2012). <i>El proyecto de investigación: Introducción a la metodología científica</i> (6.ª ed.). Editorial Episteme.</p>
+          <a href="https://archive.org/details/2012ElProyectoDeInvestigacion" target="_blank">📖 Consultar referencia</a>
+        </div>
+
+        <div class="ref-card">
+          <h3>Creswell & Creswell (2023)</h3>
+          <p>Creswell, J. W., & Creswell, J. D. (2023). <i>Research design: Qualitative, quantitative, and mixed methods approaches</i> (6th ed.). SAGE Publications.</p>
+          <a href="https://us.sagepub.com/en-us/nam/research-design/book270550" target="_blank">🌐 Consultar editorial</a>
+        </div>
+
+        <div class="ref-card">
+          <h3>OECD (2015)</h3>
+          <p>OECD. (2015). <i>Frascati Manual 2015: Guidelines for Collecting and Reporting Data on Research and Experimental Development</i>. OECD Publishing.</p>
+          <a href="https://doi.org/10.1787/9789264239012-en" target="_blank">🌐 Consultar documento</a>
+        </div>
+
+        <div class="ref-card">
+          <h3>UNESCO (2021)</h3>
+          <p>UNESCO. (2021). <i>Recomendación sobre la ciencia abierta</i>. UNESCO.</p>
+          <a href="https://unesdoc.unesco.org/ark:/48223/pf0000379949_spa" target="_blank">🌐 Consultar documento</a>
+        </div>
+
+        </div>
+<p class="footer-note">Nota: los enlaces institucionales requieren autenticación con las credenciales de la Universidad de Córdoba.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+<script>
+const sections = ["intro","objetivos","contenido","actividades","bibliografia"];
+function showSection(id){
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll(".nav a").forEach(a=>a.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.getElementById("nav-"+id).classList.add("active");
+  const pct = ((sections.indexOf(id)+1)/sections.length)*100;
+  document.getElementById("progressBar").style.width = pct + "%";
+  document.getElementById("progressText").textContent = Math.round(pct) + "%";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function toggleAcc(el){
+  const item = el.closest(".acc-item");
+  item.classList.toggle("open");
+}
+window.addEventListener("load",()=>showSection("intro"));
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  const originalShowSection = window.showSection;
+  window.showSection = function(id){
+    originalShowSection(id);
+    const hero = document.getElementById("heroBanner");
+    if(id === "intro"){
+      hero.style.display = "flex";
+    } else {
+      hero.style.display = "none";
+    }
+  }
+});
+</script>
+
+<div style="
+position:fixed;
+bottom:10px;
+left:18px;
+font-size:12px;
+color:#7b8a85;
+z-index:9999;
+font-family:Arial,sans-serif;
+opacity:.85;
+">
+Docente: Yulieth Carriazo Regino
+</div>
+
+</body>
+</html>
